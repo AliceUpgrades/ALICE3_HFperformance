@@ -17,17 +17,7 @@ def scale(hadron = "Omega_ccc", model = "SHMC_2021", collision = "PbPb", \
     nevt = sigmaAA_b * lumiAA_monthi_invnb * 1e9
     br = param["branchingratio"][hadron][brmode]
     enhanc = 1
-    eff = 1
-    if hadron is "Omega_ccc":
-        stringname = "Omega_ccc"
-        latexname = "\Omega_{ccc}"
-    if hadron is "Xsi_cc":
-        stringname = "Xi_cc"
-        latexname = "\Xi_{cc}"
-    if hadron is "Lc":
-        stringname = "Lc"
-        latexname = "\Lambda_{c}"
-
+    eff = 0.01
     filename = "%s_%s_%s_%s" % (hadron, model, collision, brmode)
     legendtext = '%s N_{ev}(%s) = %.1f B, BR=%.5f pc, eff=%.2f' \
             % (model, collision, nevt/1e9, br*100, eff)
@@ -50,12 +40,14 @@ def analysis(hadron="Omega_ccc"):
         brmode = ["central", "central", "central", "central", \
                   "central", "central", "max", "min"]
         colors = [1,2,4,5,6,7,9,11]
+        latexname = "\Omega_{ccc}"
 
     if hadron=="Xi_cc":
         models = ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania"]
         collisions = ["PbPb", "PbPb", "PbPb", "PbPb"]
         brmode = ["central", "central", "central", "central"]
         colors = [1,2,4,5]
+        latexname = "\Xi_{cc}"
 
     f = TFile("../Inputs/" + hadron +".root")
     histo_norm = f.Get("hpred_norm")
