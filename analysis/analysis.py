@@ -41,6 +41,7 @@ def analysis(hadron="Omega_ccc"):
                   "central", "central", "max", "min"]
         colors = [1,2,4,5,6,7,9,11]
         latexname = "\Omega_{ccc}"
+        useshape = "Omega_ccc"
 
     if hadron=="Xi_cc":
         models = ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania"]
@@ -48,8 +49,9 @@ def analysis(hadron="Omega_ccc"):
         brmode = ["central", "central", "central", "central"]
         colors = [1,2,4,5]
         latexname = "\Xi_{cc}"
+        useshape = "Xi_cc"
 
-    f = TFile("../Inputs/" + hadron +".root")
+    f = TFile("../Inputs/" + useshape +".root")
     histo_norm = f.Get("hpred_norm")
 
     c1 = TCanvas( 'c1', 'A Simple Graph Example')
