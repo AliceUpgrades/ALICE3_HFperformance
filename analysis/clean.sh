@@ -1,5 +1,5 @@
-rm *.root *.pdf
+rm *.root *.pdf *.C
 cd ../Inputs
-rm *.root *.pdf
+rm *.root *.pdf *.C
 cd -
 
