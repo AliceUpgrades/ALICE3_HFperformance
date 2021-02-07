@@ -1,19 +1,55 @@
 do_corr:
+  activate: true
   Omega_ccc:
-    doeff: false
-    efffile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
-    namenumhist: hrecocuts_omegaccc_trial_4
-    namedenhist: hgen_acc_omegaccc
-    bkgfile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
-    namehistobkg: hbkg_counts_d0rphi_omegac_4
+    PbPb:
+      doeff: true
+      efffile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
+      namenumhist: hrecocuts_omegaccc_trial_4
+      namedenhist: hgen_acc_omegaccc
+      bkgfile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
+      namehistobkg: hbkg_counts_d0rphi_omegac_4
+    KrKr:
+      doeff: false
+    ArAr:
+      doeff: false
   Omega_cc:
-    doeff: false
+    PbPb:
+      doeff: true
+      efffile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
+      namenumhist: hrecocuts_omegacc_trial_4
+      namedenhist: hgen_acc_omegacc
+      bkgfile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
+      namehistobkg: hbkg_counts_decL_omegac_4
+    KrKr:
+      doeff: false
+    ArAr:
+      doeff: false
   Lambda_c:
-    doeff: false
+    PbPb:
+      doeff: false
+    KrKr:
+      doeff: false
+    ArAr:
+      doeff: false
   Xi_cc:
-    doeff: false
+    PbPb:
+      doeff: true
+      efffile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
+      namenumhist: hrecocuts_omegacc_trial_4
+      namedenhist: hgen_acc_omegacc
+      bkgfile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
+      namehistobkg: hbkg_counts_decL_omegac_4
+    KrKr:
+      doeff: false
+    ArAr:
+      doeff: false
   X3872:
-    doeff: false
+    PbPb:
+      doeff: false
+    KrKr:
+      doeff: false
+    ArAr:
+      doeff: false
 
 pt_binning:
   nbins: 10
@@ -149,7 +185,7 @@ comparison_models:
     brmode: ["central", "central", "central", "central", "central", "central", "max", "min"]
     colors: [1, 2, 4, 5, 6, 7, 9, 11]
     useshape: "Omega_ccc"
-    ymin: 1.e-2
+    ymin: 1.e-5
     ymax: 1.e+8
   Omega_cc:
     models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
@@ -157,7 +193,7 @@ comparison_models:
     brmode: ["central", "central", "central", "max", "min", "max", "min"]
     colors: [1, 2, 4, 5, 6, 7, 9]
     useshape: "Omega_cc"
-    ymin: 1.e+0
+    ymin: 1.e-2
     ymax: 1.e+10
   Xi_cc:
     models: ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
@@ -165,7 +201,7 @@ comparison_models:
     brmode: ["central", "central", "central", "central", "central", "min", "max"]
     colors: [1, 2, 4, 5, 7, 9, 11]
     useshape: "Xi_cc"
-    ymin: 1.e+0
+    ymin: 1.e-2
     ymax: 1.e+10
   X3872:
     models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "Stat_ChoLee_tetra", "Stat_ChoLee_molecule"]
@@ -173,7 +209,7 @@ comparison_models:
     brmode: ["central", "central", "central", "central", "central"]
     colors: [1, 2, 4, 5, 7]
     useshape: "X3872"
-    ymin: 1.e+0
+    ymin: 1.e-2
     ymax: 1.e+10
     
 efficiency:

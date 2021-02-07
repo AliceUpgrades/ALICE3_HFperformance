@@ -33,6 +33,7 @@ def analysis(hadron="Omega_ccc"):
     useshape = param["comparison_models"][hadron]["useshape"]
     ymin = param["comparison_models"][hadron]["ymin"]
     ymax = param["comparison_models"][hadron]["ymax"]
+    activatecorr = param["do_corr"]["activate"]
     binanal = array('d', param["pt_binning"]["hadron"][hadron])
 
     fin = TFile("../Inputs/" + useshape +".root")
@@ -64,6 +65,8 @@ def analysis(hadron="Omega_ccc"):
     hempty.GetZaxis().SetTitleFont(42)
     hempty.Draw()
     histolist = [None]*len(models)
+    histoefflist = [None]*len(models)
+    histobkglist = [None]*len(models)
 
     leg = TLegend(0.1471471, 0.6108291, 0.3018018, 0.8747885, "", "brNDC")
     leg.SetBorderSize(1)
@@ -74,33 +77,31 @@ def analysis(hadron="Omega_ccc"):
     leg.SetTextSize(0.022)
     leg.SetFillStyle(1001)
 
-    doeff = param["do_corr"][hadron]["doeff"]
     effvalue = 1.
     effarray = [effvalue]*(len(binanal)-1)
     stringeff = "%d" % effvalue
-    if doeff is True:
-        stringeff = "simu"
-        doeff = param["do_corr"][hadron]["doeff"]
-        efffile = param["do_corr"][hadron]["efffile"]
-        namenumeff = param["do_corr"][hadron]["namenumhist"]
-        namedeneff = param["do_corr"][hadron]["namedenhist"]
-        fileff = TFile(efffile)
-        hnum = fileff.Get(namenumeff)
-        hden = fileff.Get(namedeneff)
-        hnum = hnum.Rebin(len(binanal)-1, namenumeff, binanal)
-        hden = hden.Rebin(len(binanal)-1, namedeneff, binanal)
-        heff = hnum.Clone("heff")
-        heff.Divide(heff, hden, 1., 1., "B")
-        for ibin in range(heff.GetNbinsX()-1):
-            effarray[ibin] = heff.GetBinContent(ibin+1)
-
-        fileout = TFile("output.root", "recreate")
-        fileout.cd()
-        hnum.Write()
-        hden.Write()
-        heff.Write()
-
     for icase, _ in enumerate(models):
+        doeff = param["do_corr"][hadron][collisions[icase]]["doeff"]
+        if activatecorr is True:
+            if doeff is False:
+                continue
+            stringeff = "simu"
+            efffile = param["do_corr"][hadron][collisions[icase]]["efffile"]
+            namenumeff = param["do_corr"][hadron][collisions[icase]]["namenumhist"]
+            namedeneff = param["do_corr"][hadron][collisions[icase]]["namedenhist"]
+            print(efffile)
+            fileff = TFile(efffile)
+            hnum = fileff.Get(namenumeff)
+            hden = fileff.Get(namedeneff)
+            hnum = hnum.Rebin(len(binanal)-1, namenumeff, binanal)
+            hden = hden.Rebin(len(binanal)-1, namedeneff, binanal)
+            heff = hnum.Clone("heff")
+            heff.Divide(heff, hden, 1., 1., "B")
+            for ibin in range(heff.GetNbinsX()-1):
+                effarray[ibin] = heff.GetBinContent(ibin+1)
+            histoefflist[icase] = heff.Clone("heff_%d" % icase)
+            fileff.Close()
+
         histolist[icase] = histo_norm.Clone("histo_pred%d" % icase)
         scalef, text = scale(hadron, models[icase], collisions[icase], brmode[icase])
         for ibin in range(histolist[icase].GetNbinsX()-1):
