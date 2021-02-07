@@ -1,5 +1,5 @@
 pt_binning: 
- nbins: 20
+ nbins: 10
  minb: 0.
  maxb: 10.
 
@@ -100,6 +100,7 @@ branchingratio:
   Omega_ccc:
     central: 5.4e-05
     min: 2.16e-6
+    max: 2.16e-4
 
 efficiency:
   Omega_ccc:
