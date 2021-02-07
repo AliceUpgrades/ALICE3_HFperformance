@@ -36,7 +36,6 @@ def analysis(hadron="Omega_ccc"):
     ymin = param["comparison_models"][hadron]["ymin"]
     ymax = param["comparison_models"][hadron]["ymax"]
     binanal = array('d', param["pt_binning"]["hadron"][hadron])
-    dorebin = param["do_corr"]["dorebin"]
 
     fin = TFile("../Inputs/" + useshape +".root")
     histo_norm = fin.Get("hpred_norm")
@@ -77,6 +76,29 @@ def analysis(hadron="Omega_ccc"):
     leg.SetTextSize(0.022)
     leg.SetFillStyle(1001)
 
+    doeff = param["do_corr"][hadron]["doeff"]
+    effarray = [1.]*(len(binanal)-1)
+    if doeff is True:
+        doeff = param["do_corr"][hadron]["doeff"]
+        efffile = param["do_corr"][hadron]["efffile"]
+        namenumeff = param["do_corr"][hadron]["namenumhist"]
+        namedeneff = param["do_corr"][hadron]["namedenhist"]
+        fileff = TFile(efffile)
+        hnum = fileff.Get(namenumeff)
+        hden = fileff.Get(namedeneff)
+        hnum = hnum.Rebin(len(binanal)-1, namenumeff, binanal)
+        hden = hden.Rebin(len(binanal)-1, namedeneff, binanal)
+        heff = hnum.Clone("heff")
+        heff.Divide(heff, hden, 1., 1., "B")
+        for ibin in range(heff.GetNbinsX()-1):
+            effarray[ibin] = heff.GetBinContent(ibin+1)
+
+        fileout = TFile("output.root", "recreate")
+        fileout.cd()
+        hnum.Write()
+        hden.Write()
+        heff.Write()
+
     for icase, _ in enumerate(models):
         histolist[icase] = histo_norm.Clone("histo_pred%d" % icase)
         scalef, text = scale(hadron, models[icase], collisions[icase], brmode[icase])
@@ -84,9 +106,11 @@ def analysis(hadron="Omega_ccc"):
             binwdith = histolist[icase].GetBinWidth(ibin+1)
             yvalue = histolist[icase].GetBinContent(ibin+1)
             histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
-        if dorebin is True:
-            histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
+        histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
                                 "histo_pred%d" % icase, binanal)
+        for ibin in range(histolist[icase].GetNbinsX()-1):
+            histolist[icase].SetBinContent(ibin+1, \
+                effarray[ibin]*histolist[icase].GetBinContent(ibin+1))
         histolist[icase].SetLineColor(colors[icase])
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
@@ -94,6 +118,7 @@ def analysis(hadron="Omega_ccc"):
         text = text + " Yield(tot)=%.2f" % histolist[icase].Integral()
         leg.AddEntry(histolist[icase], text, "pF")
     leg.Draw()
+
     canvas.SaveAs(hadron+"_results.pdf")
     canvas.SaveAs(hadron+"_results.C")
 
