@@ -26,42 +26,15 @@ def scale(hadron="Omega_ccc", model="SHMC_2021", collision="PbPb", \
 
 def analysis(hadron="Omega_ccc"):
     gStyle.SetOptStat(0)
-    models = None
-    collisions = None
-    brmode = None
-    colors = None
-
-    if hadron == "Omega_ccc":
-        models = ["SHMC_2021", "SHMC_2021", "SHMC_2021", "Stat_ChoLee_1", \
-                  "Stat_ChoLee_2", "Catania", "SHMC_2021", "SHMC_2021"]
-        collisions = ["PbPb", "KrKr", "ArAr", "PbPb", \
-                      "PbPb", "PbPb", "KrKr", "KrKr"]
-        brmode = ["central", "central", "central", "central", \
-                  "central", "central", "max", "min"]
-        colors = [1, 2, 4, 5, 6, 7, 9, 11]
-        useshape = "Omega_ccc"
-        ymin = 1e-4
-        ymax = 1e6
-
-    if hadron == "Omega_cc":
-        models = ["SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", \
-                  "SHMC_2021", "SHMC_2021", "SHMC_2021"]
-        collisions = ["PbPb", "KrKr", "ArAr", "PbPb", "PbPb", "KrKr", "KrKr"]
-        brmode = ["central", "central", "central", "max", "min", "max", "min"]
-        colors = [1, 2, 4, 5, 6, 7, 9]
-        useshape = "Xi_cc"
-        ymin = 1e-2
-        ymax = 1e8
-
-    if hadron == "Xi_cc":
-        models = ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania", \
-                  "SHMC_2021", "SHMC_2021", "SHMC_2021"]
-        collisions = ["PbPb", "PbPb", "PbPb", "PbPb", "KrKr", "KrKr", "KrKr"]
-        brmode = ["central", "central", "central", "central", "central", "min", "max"]
-        colors = [1, 2, 4, 5, 7, 9, 11]
-        useshape = "Xi_cc"
-        ymin = 1e-2
-        ymax = 1e8
+    with open(r'prediction.yaml') as fileparam:
+        param = yaml.load(fileparam, Loader=yaml.FullLoader)
+    models = param["comparison_models"][hadron]["models"]
+    collisions = param["comparison_models"][hadron]["collisions"]
+    brmode = param["comparison_models"][hadron]["brmode"]
+    colors = param["comparison_models"][hadron]["colors"]
+    useshape = param["comparison_models"][hadron]["useshape"]
+    ymin = param["comparison_models"][hadron]["ymin"]
+    ymax = param["comparison_models"][hadron]["ymax"]
 
     fin = TFile("../Inputs/" + useshape +".root")
     histo_norm = fin.Get("hpred_norm")
@@ -119,3 +92,4 @@ def analysis(hadron="Omega_ccc"):
 analysis("Omega_ccc")
 analysis("Omega_cc")
 analysis("Xi_cc")
+analysis("X3872")
