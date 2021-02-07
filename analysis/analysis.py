@@ -17,12 +17,11 @@ def scale(hadron="Omega_ccc", model="SHMC_2021", collision="PbPb", \
     nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9
     bratio = param["branchingratio"][hadron][brmode]
     enhanc = 1
-    eff = 0.01
+    eff = 1.
     legendtext = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%, #varepsilon=%.2f' \
             % (model, collision, nevt/1e9, bratio*100, eff)
     scale_factor = bratio * enhanc * eff * nevt * yieldmid
     return scale_factor, legendtext
-
 
 def analysis(hadron="Omega_ccc"):
     gStyle.SetOptStat(0)
@@ -52,12 +51,11 @@ def analysis(hadron="Omega_ccc"):
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T};#Delta N/#Delta p_{T}", 100, 0., 10., 100, ymin, ymax)
+    hempty = TH2F("hempty", ";p_{T};Yields", 100, 0., 10., 100, ymin, ymax)
     hempty.GetXaxis().SetTitle("p_{T}")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
     hempty.GetXaxis().SetTitleFont(42)
-    hempty.GetYaxis().SetTitle("#Delta N/#Delta p_{T} (GeV^{-1})")
     hempty.GetYaxis().SetLabelFont(42)
     hempty.GetYaxis().SetTitleOffset(1.35)
     hempty.GetYaxis().SetTitleFont(42)
@@ -80,15 +78,19 @@ def analysis(hadron="Omega_ccc"):
         histolist[icase] = histo_norm.Clone("histo_pred%d" % icase)
         scalef, text = scale(hadron, models[icase], collisions[icase], brmode[icase])
         for ibin in range(histolist[icase].GetNbinsX()-1):
-            histolist[icase].SetBinContent(ibin+1, scalef*histolist[icase].GetBinContent(ibin+1))
+            binwdith = histolist[icase].GetBinWidth(ibin+1)
+            yvalue = histolist[icase].GetBinContent(ibin+1)
+            histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
         histolist[icase].SetLineColor(colors[icase])
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
         histolist[icase].Draw("same")
+        text = text + " Yield(tot)=%.2f" % histolist[icase].Integral()
         leg.AddEntry(histolist[icase], text, "pF")
     leg.Draw()
     canvas.SaveAs(hadron+"_results.pdf")
     canvas.SaveAs(hadron+"_results.C")
+
 analysis("Omega_ccc")
 analysis("Omega_cc")
 analysis("Xi_cc")

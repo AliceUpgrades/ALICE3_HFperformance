@@ -32,6 +32,7 @@ def read_predictions(hadron="Omega_ccc", collision="PbPb"):
     ptcand_val = array('f', ptcand)
     cross_val = array('f', cross)
     if do2pipnorm == 1:
+        print("Performing 2pip multiplication")
         cross_val_ptscaled = array('f', [2*3.14*a*b for a, b in zip(ptcand_val, cross_val)])
     if do2pipnorm == 0:
         cross_val_ptscaled = cross_val
@@ -72,7 +73,7 @@ def read_predictions(hadron="Omega_ccc", collision="PbPb"):
     cpred.SetFrameBorderMode(0)
     cpred.cd()
     gPad.SetLogy()
-    hempty = TH2F("hempty", ";p_{T};dN/d p_{T}", 100, 0., 8., 100, miny, maxy)
+    hempty = TH2F("hempty", ";p_{T};dN/d p_{T}", 100, 0., 10., 100, miny, maxy)
     hempty.GetYaxis().SetTitle('dN/dp_{T} (%s) (GeV^{-1})' % latexname)
     hempty.GetXaxis().SetTitle("p_{T}")
     hempty.GetXaxis().SetLabelFont(42)

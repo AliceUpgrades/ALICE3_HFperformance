@@ -17,11 +17,11 @@ ptshape:
     maxy: 10.
   Xi_cc:
     inputfile: Xi_cc_LHC_PbPb_276TeV
-    miny: 1.e-6
+    miny: 1.e-7
     maxy: 1.e-2
   Omega_cc:
     inputfile: Omega_cc_LHC_PbPb_276TeV
-    miny: 1.e-6
+    miny: 1.e-8
     maxy: 1.e-2
   Omega_ccc:
     inputfile: Omega_ccc_LHC_PbPb_276TeV
@@ -29,7 +29,7 @@ ptshape:
     maxy: 1.e-5
   X3872:
     inputfile: X3872_LHC_PbPb_276TeV
-    miny: 1.e-6
+    miny: 1.e-8
     maxy: 1.e-2
 
 models:
@@ -63,6 +63,14 @@ models:
       Xi_cc: 6.70e-03
       Omega_ccc: 5.9e-06
   
+  Stat_ChoLee_tetra:
+    PbPb:
+      X3872: 3.80e-4
+
+  Stat_ChoLee_molecule:
+    PbPb:
+      X3872: 4.50e-3
+
   Stat_Becc_min:
     PbPb:
       Xi_cc: 1.9e-02
@@ -84,10 +92,10 @@ statistics:
     lumiAA_monthi_invnb: 4.92 
   KrKr: 
     sigmaAA_b: 4.06
-    lumiAA_monthi_invnb: 218
+    lumiAA_monthi_invnb: 123.
   ArAr: 
     sigmaAA_b: 2.6
-    lumiAA_monthi_invnb: 3180 
+    lumiAA_monthi_invnb: 1080
 
 branchingratio:
   Lambda_c:
@@ -117,32 +125,32 @@ comparison_models:
     brmode: ["central", "central", "central", "central", "central", "central", "max", "min"]
     colors: [1, 2, 4, 5, 6, 7, 9, 11]
     useshape: "Omega_ccc"
-    ymin: 1.e-4
-    ymax: 1.e+6
+    ymin: 1.e-2
+    ymax: 1.e+8
   Omega_cc:
     models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
     collisions: ["PbPb", "KrKr", "ArAr", "PbPb", "PbPb", "KrKr", "KrKr"]
     brmode: ["central", "central", "central", "max", "min", "max", "min"]
     colors: [1, 2, 4, 5, 6, 7, 9]
     useshape: "Omega_cc"
-    ymin: 1.e-2
-    ymax: 1.e+8
+    ymin: 1.e+0
+    ymax: 1.e+10
   Xi_cc:
     models: ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
     collisions: ["PbPb", "PbPb", "PbPb", "PbPb", "KrKr", "KrKr", "KrKr"]
     brmode: ["central", "central", "central", "central", "central", "min", "max"]
     colors: [1, 2, 4, 5, 7, 9, 11]
     useshape: "Xi_cc"
-    ymin: 1.e-2
-    ymax: 1.e+8
+    ymin: 1.e+0
+    ymax: 1.e+10
   X3872:
-    models: ["SHMC_2021", "SHMC_2021", "SHMC_2021"]
-    collisions: ["PbPb", "KrKr", "ArAr"]
-    brmode: ["central", "central", "central"]
-    colors: [1, 2, 4]
+    models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "Stat_ChoLee_tetra", "Stat_ChoLee_molecule"]
+    collisions: ["PbPb", "KrKr", "ArAr", "PbPb", "PbPb"]
+    brmode: ["central", "central", "central", "central", "central"]
+    colors: [1, 2, 4, 5, 7]
     useshape: "X3872"
-    ymin: 1.e-2
-    ymax: 1.e+8
+    ymin: 1.e+0
+    ymax: 1.e+10
     
 efficiency:
   Omega_ccc:
