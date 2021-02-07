@@ -2,39 +2,24 @@ from array import array
 import pandas as pd
 import numpy as np
 from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
+import yaml
 from ROOT import gStyle
 from ROOT import gROOT
 from ROOT import TStyle, TLegendEntry
 
 def read_predictions(hadron = "Omega_ccc", collision = "PbPb"):
-    nbins = 10
-    minb = 0.
-    maxb = 10.
+    do2pipnorm = 1
+    with open(r'prediction.yaml') as fileparam:
+        param = yaml.load(fileparam, Loader=yaml.FullLoader)
+    latexname = param["latexparticle"][hadron]
+    filename = param["ptshape"][hadron]["inputfile"]
+    miny = param["ptshape"][hadron]["miny"]
+    maxy = param["ptshape"][hadron]["maxy"]
+    nbins = param["pt_binning"]["nbins"]
+    minb = param["pt_binning"]["minb"]
+    maxb = param["pt_binning"]["maxb"]
     width = (maxb-minb)/float(nbins)
-    miny = 0
-    maxy = 0
-    if hadron is "Omega_ccc":
-        stringname = "Omega_ccc"
-        latexname = "#Omega_{ccc}"
-        filename = "Omega_ccc_LHC_PbPb_276TeV"
-        maxy = 1e-5
-        miny = 1e-9
-    if hadron is "Xsi_cc":
-        stringname = "Xi_cc"
-        latexname = "#Xi_{cc}"
-        filename = "Xsi_cc_LHC_PbPb_276TeV"
-        maxy = 1e-2
-        miny = 1e-6
-    if hadron is "Lc":
-        stringname = "Lc"
-        latexname = "#Lambda_{c}"
-        filename = "Lc_LHC_PbPb_276TeV"
-        maxy = 1e2
-        miny = 1e-4
-
-    if collision is "PbPb":
-        nevt = 1.
-        energy = 2.76
+    energy = 2.76
 
     legendtext = '%s %.2f TeV, arXiv.1907.12786 (Coal.2)' % (collision, energy)
     df = pd.read_csv("../Inputs/" + filename+".csv")
@@ -44,7 +29,10 @@ def read_predictions(hadron = "Omega_ccc", collision = "PbPb"):
 
     pt_val = array('f', pt)
     cross_val = array('f', cross)
-    cross_val_ptscaled = array('f',[2*3.14*a*b for a,b in zip(pt_val, cross_val)])
+    if do2pipnorm == 1:
+        cross_val_ptscaled = array('f',[2*3.14*a*b for a,b in zip(pt_val, cross_val)])
+    if do2pipnorm == 0:
+        cross_val_ptscaled = cross_val
     n = 25
     gr = TGraph( n, pt_val, cross_val_ptscaled)
     gr.SetLineColor(1)
@@ -61,7 +49,7 @@ def read_predictions(hadron = "Omega_ccc", collision = "PbPb"):
       histo.SetBinContent(i+1,gr.Eval(i*width+width/2.))
       print(i+1, i*width+width/2., gr.Eval(i*width+width/2.))
       norm = norm + width*gr.Eval(i*width+width/2.)
-    f = TFile("../Inputs/" + stringname+".root", "recreate")
+    f = TFile("../Inputs/" + hadron+".root", "recreate")
     gr.Write()
     histo.Write()
     histo_norm = TH1F("hpred_norm", ";p_{T}; #Delta N/#Delta p_{T}", nbins, minb, maxb)
@@ -81,6 +69,7 @@ def read_predictions(hadron = "Omega_ccc", collision = "PbPb"):
     c1.SetFrameBorderMode(0);
     c1.cd()
     gPad.SetLogy()
+    print(miny,maxy)
     hempty = TH2F("hempty", ";p_{T};dN/d p_{T}", 100, 0., 8., 100, miny, maxy)
     hempty.GetYaxis().SetTitle('dN/dp_{T} (%s) (GeV^{-1})' % latexname)
     hempty.GetXaxis().SetTitle("p_{T}");
@@ -110,5 +99,7 @@ def read_predictions(hadron = "Omega_ccc", collision = "PbPb"):
     c1.SaveAs("../Inputs/" + filename+".C")
 
 read_predictions("Omega_ccc", "PbPb")
-read_predictions("Xsi_cc", "PbPb")
-read_predictions("Lc", "PbPb")
+read_predictions("Omega_cc", "PbPb")
+read_predictions("Xi_cc", "PbPb")
+read_predictions("X3872", "PbPb")
+read_predictions("Lambda_c", "PbPb")

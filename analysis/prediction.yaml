@@ -1,3 +1,37 @@
+pt_binning: 
+ nbins: 20
+ minb: 0.
+ maxb: 10.
+
+latexparticle:
+  Lambda_c: "#Lambda_{c}"
+  Xi_cc: "#Xi_{cc}"
+  Omega_cc: "#Omega_{cc}"
+  Omega_ccc: "#Omega_{ccc}"
+  X3872: "X(3872)"
+
+ptshape:
+  Lambda_c:
+    inputfile: Lambda_c_LHC_PbPb_276TeV
+    miny: 0.0001
+    maxy: 10.
+  Xi_cc:
+    inputfile: Xi_cc_LHC_PbPb_276TeV
+    miny: 1.e-6
+    maxy: 1.e-2
+  Omega_cc:
+    inputfile: Omega_cc_LHC_PbPb_276TeV
+    miny: 1.e-6
+    maxy: 1.e-2
+  Omega_ccc:
+    inputfile: Omega_ccc_LHC_PbPb_276TeV
+    miny: 1.e-9
+    maxy: 1.e-5
+  X3872:
+    inputfile: X3872_LHC_PbPb_276TeV
+    miny: 1.e-6
+    maxy: 1.e-2
+
 models:
   SHMC_2021:
     PbPb:
@@ -66,4 +100,12 @@ branchingratio:
   Omega_ccc:
     central: 5.4e-05
     min: 2.16e-6
-    max: 2.16e-4
+
+efficiency:
+  Omega_ccc:
+    docorr: true
+    efffile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
+    namenumhist: hrecocuts_omegaccc_trial_4
+    namedenhist: hgen_acc_omegaccc
+    bkgfile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
+    namehisto: hbkg_counts_d0rphi_omegac_0
