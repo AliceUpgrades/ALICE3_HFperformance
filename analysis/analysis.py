@@ -1,4 +1,5 @@
 #pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
+from array import array
 import yaml
 # pylint: disable=import-error, no-name-in-module, unused-import
 from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
@@ -34,6 +35,8 @@ def analysis(hadron="Omega_ccc"):
     useshape = param["comparison_models"][hadron]["useshape"]
     ymin = param["comparison_models"][hadron]["ymin"]
     ymax = param["comparison_models"][hadron]["ymax"]
+    binanal = array('d', param["pt_binning"]["hadron"][hadron])
+    dorebin = param["do_corr"]["dorebin"]
 
     fin = TFile("../Inputs/" + useshape +".root")
     histo_norm = fin.Get("hpred_norm")
@@ -81,6 +84,9 @@ def analysis(hadron="Omega_ccc"):
             binwdith = histolist[icase].GetBinWidth(ibin+1)
             yvalue = histolist[icase].GetBinContent(ibin+1)
             histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
+        if dorebin is True:
+            histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
+                                "histo_pred%d" % icase, binanal)
         histolist[icase].SetLineColor(colors[icase])
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
