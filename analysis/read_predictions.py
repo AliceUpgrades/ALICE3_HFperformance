@@ -32,7 +32,6 @@ def read_predictions(hadron="Omega_ccc", collision="PbPb"):
     ptcand_val = array('f', ptcand)
     cross_val = array('f', cross)
     if do2pipnorm == 1:
-        print("Performing 2pip multiplication")
         cross_val_ptscaled = array('f', [2*3.14*a*b for a, b in zip(ptcand_val, cross_val)])
     if do2pipnorm == 0:
         cross_val_ptscaled = cross_val
