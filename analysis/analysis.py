@@ -17,11 +17,9 @@ def scale(hadron="Omega_ccc", model="SHMC_2021", collision="PbPb", \
     lumiaa_monthi_invnb = param["statistics"][collision]["lumiAA_monthi_invnb"]
     nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9
     bratio = param["branchingratio"][hadron][brmode]
-    enhanc = 1
-    eff = 1.
-    legendtext = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%, #varepsilon=%.2f' \
-            % (model, collision, nevt/1e9, bratio*100, eff)
-    scale_factor = bratio * enhanc * eff * nevt * yieldmid
+    legendtext = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
+            % (model, collision, nevt/1e9, bratio*100)
+    scale_factor = bratio * nevt * yieldmid
     return scale_factor, legendtext
 
 def analysis(hadron="Omega_ccc"):
@@ -77,8 +75,11 @@ def analysis(hadron="Omega_ccc"):
     leg.SetFillStyle(1001)
 
     doeff = param["do_corr"][hadron]["doeff"]
-    effarray = [1.]*(len(binanal)-1)
+    effvalue = 1.
+    effarray = [effvalue]*(len(binanal)-1)
+    stringeff = "%d" % effvalue
     if doeff is True:
+        stringeff = "simu"
         doeff = param["do_corr"][hadron]["doeff"]
         efffile = param["do_corr"][hadron]["efffile"]
         namenumeff = param["do_corr"][hadron]["namenumhist"]
@@ -115,7 +116,8 @@ def analysis(hadron="Omega_ccc"):
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
         histolist[icase].Draw("same")
-        text = text + " Yield(tot)=%.2f" % histolist[icase].Integral()
+        text = text + " Yield(tot)=%.2f, #varepsilon=%s" % (histolist[icase].Integral(), \
+                stringeff)
         leg.AddEntry(histolist[icase], text, "pF")
     leg.Draw()
 

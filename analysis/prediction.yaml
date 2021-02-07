@@ -1,7 +1,6 @@
 do_corr:
   Omega_ccc:
     doeff: false
-    dosign: true
     efffile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
     namenumhist: hrecocuts_omegaccc_trial_4
     namedenhist: hgen_acc_omegaccc
