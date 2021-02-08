@@ -1,4 +1,5 @@
 #pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
+from math import sqrt
 from array import array
 import yaml
 # pylint: disable=import-error, no-name-in-module, unused-import
@@ -20,7 +21,7 @@ def scale(hadron="Omega_ccc", model="SHMC_2021", collision="PbPb", \
     legendtext = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
             % (model, collision, nevt/1e9, bratio*100)
     scale_factor = bratio * nevt * yieldmid
-    return scale_factor, legendtext
+    return scale_factor, legendtext, nevt
 
 def analysis(hadron="Omega_ccc"):
     gStyle.SetOptStat(0)
@@ -39,77 +40,46 @@ def analysis(hadron="Omega_ccc"):
     fin = TFile("../Inputs/" + useshape +".root")
     histo_norm = fin.Get("hpred_norm")
 
-    canvas = TCanvas("canvas", "A Simple Graph Example", 881, 176, 668, 616)
-    gStyle.SetOptStat(0)
-    canvas.SetHighLightColor(2)
-    canvas.Range(-1.25, -4.625, 11.25, 11.625)
-    canvas.SetFillColor(0)
-    canvas.SetBorderMode(0)
-    canvas.SetBorderSize(2)
-    canvas.SetLogy()
-    canvas.SetFrameBorderMode(0)
-    canvas.SetFrameBorderMode(0)
-    canvas.cd()
-    gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T};Yields", 100, 0., 10., 100, ymin, ymax)
-    hempty.GetXaxis().SetTitle("p_{T}")
-    hempty.GetXaxis().SetLabelFont(42)
-    hempty.GetXaxis().SetTitleOffset(1)
-    hempty.GetXaxis().SetTitleFont(42)
-    hempty.GetYaxis().SetLabelFont(42)
-    hempty.GetYaxis().SetTitleOffset(1.35)
-    hempty.GetYaxis().SetTitleFont(42)
-    hempty.GetZaxis().SetLabelFont(42)
-    hempty.GetZaxis().SetTitleOffset(1)
-    hempty.GetZaxis().SetTitleFont(42)
-    hempty.Draw()
     histolist = [None]*len(models)
     histoefflist = [None]*len(models)
     histobkglist = [None]*len(models)
-
-    leg = TLegend(0.1471471, 0.6108291, 0.3018018, 0.8747885, "", "brNDC")
-    leg.SetBorderSize(1)
-    leg.SetLineColor(0)
-    leg.SetLineStyle(1)
-    leg.SetLineWidth(1)
-    leg.SetFillColor(0)
-    leg.SetTextSize(0.022)
-    leg.SetFillStyle(1001)
+    histosiglist = [None]*len(models)
 
     effvalue = 1.
     effarray = [effvalue]*(len(binanal)-1)
     stringeff = "%d" % effvalue
+    foutput = TFile("foutput" + hadron + ".root", "recreate")
     for icase, _ in enumerate(models):
         doeff = param["do_corr"][hadron][collisions[icase]]["doeff"]
         if activatecorr is True:
-            if doeff is False:
-                continue
-            stringeff = "simu"
-            efffile = param["do_corr"][hadron][collisions[icase]]["efffile"]
-            namenumeff = param["do_corr"][hadron][collisions[icase]]["namenumhist"]
-            namedeneff = param["do_corr"][hadron][collisions[icase]]["namedenhist"]
-            print(efffile)
-            fileff = TFile(efffile)
-            hnum = fileff.Get(namenumeff)
-            hden = fileff.Get(namedeneff)
-            hnum = hnum.Rebin(len(binanal)-1, namenumeff, binanal)
-            hden = hden.Rebin(len(binanal)-1, namedeneff, binanal)
-            heff = hnum.Clone("heff")
-            heff.Divide(heff, hden, 1., 1., "B")
-            for ibin in range(heff.GetNbinsX()-1):
-                effarray[ibin] = heff.GetBinContent(ibin+1)
-            histoefflist[icase] = heff.Clone("heff_%d" % icase)
-            fileff.Close()
+            if doeff is True:
+                stringeff = "simu"
+                efffile = param["do_corr"][hadron][collisions[icase]]["efffile"]
+                namenumeff = param["do_corr"][hadron][collisions[icase]]["namenumhist"]
+                namedeneff = param["do_corr"][hadron][collisions[icase]]["namedenhist"]
+                fileff = TFile(efffile)
+                hnum = fileff.Get(namenumeff)
+                hden = fileff.Get(namedeneff)
+                hnum = hnum.Rebin(len(binanal)-1, namenumeff, binanal)
+                hden = hden.Rebin(len(binanal)-1, namedeneff, binanal)
+                heff = hnum.Clone("heff")
+                heff.Divide(heff, hden, 1., 1., "B")
+                for ibin in range(heff.GetNbinsX()-1):
+                    effarray[ibin] = heff.GetBinContent(ibin+1)
+                histoefflist[icase] = heff.Clone("heff_%s%s%s" % \
+                        (models[icase], collisions[icase], brmode[icase]))
 
-        histolist[icase] = histo_norm.Clone("histo_pred%d" % icase)
-        scalef, text = scale(hadron, models[icase], collisions[icase], brmode[icase])
+        histolist[icase] = histo_norm.Clone("histo_pred%s%s%s" % \
+                (models[icase], collisions[icase], brmode[icase]))
+        scalef, text, nevt = scale(hadron, models[icase], collisions[icase], brmode[icase])
         for ibin in range(histolist[icase].GetNbinsX()-1):
             binwdith = histolist[icase].GetBinWidth(ibin+1)
             yvalue = histolist[icase].GetBinContent(ibin+1)
             histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
         histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
-                                "histo_pred%d" % icase, binanal)
+                "histo_yield%s%s%s" % (models[icase], collisions[icase], \
+                    brmode[icase]), binanal)
         for ibin in range(histolist[icase].GetNbinsX()-1):
             histolist[icase].SetBinContent(ibin+1, \
                 effarray[ibin]*histolist[icase].GetBinContent(ibin+1))
@@ -119,11 +89,28 @@ def analysis(hadron="Omega_ccc"):
         histolist[icase].Draw("same")
         text = text + " Yield(tot)=%.2f, #varepsilon=%s" % (histolist[icase].Integral(), \
                 stringeff)
-        leg.AddEntry(histolist[icase], text, "pF")
-    leg.Draw()
-
-    canvas.SaveAs(hadron+"_results.pdf")
-    canvas.SaveAs(hadron+"_results.C")
+        if activatecorr is True:
+            if doeff is True:
+                bkgfile = param["do_corr"][hadron][collisions[icase]]["bkgfile"]
+                namehistobkg = param["do_corr"][hadron][collisions[icase]]["namehistobkg"]
+                filebkg = TFile(bkgfile)
+                hbkg = filebkg.Get(namehistobkg)
+                histobkglist[icase] = hbkg.Clone("hbkg_%s%s%s" % \
+                        (models[icase], collisions[icase], brmode[icase]))
+                histobkglist[icase].Scale(nevt)
+                foutput.cd()
+                histoefflist[icase].Write()
+                histobkglist[icase].Write()
+                histosiglist[icase] = histolist[icase].Clone("hsign_%s%s%s" % \
+                        (models[icase], collisions[icase], brmode[icase]))
+                for ibin in range(histosiglist[icase].GetNbinsX()-1):
+                    signal = histolist[icase].GetBinContent(ibin+1)
+                    bkg = histobkglist[icase].GetBinContent(ibin+1)
+                    histosiglist[icase].SetBinContent(ibin+1, signal/sqrt(signal+bkg))
+                histosiglist[icase].Write()
+        foutput.cd()
+        histolist[icase].Write()
+    foutput.Close()
 
 analysis("Omega_ccc")
 analysis("Omega_cc")
