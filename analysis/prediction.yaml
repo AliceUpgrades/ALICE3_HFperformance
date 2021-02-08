@@ -1,26 +1,26 @@
 do_corr:
   activate: true
   Omega_ccc:
-    PbPb:
+    KrKr:
       doeff: true
       efffile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
       namenumhist: hrecocuts_omegaccc_trial_4
       namedenhist: hgen_acc_omegaccc
       bkgfile: ../Inputs/Omega_ccc/d0rphi_omegac_cuts/trial_6/significance_estimate_trial_d0rphi_omegac.root
       namehistobkg: hbkg_counts_d0rphi_omegac_4
-    KrKr:
+    PbPb:
       doeff: false
     ArAr:
       doeff: false
   Omega_cc:
-    PbPb:
+    KrKr:
       doeff: true
       efffile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
       namenumhist: hrecocuts_omegacc_trial_4
       namedenhist: hgen_acc_omegacc
       bkgfile: ../Inputs/Omega_cc/decay_length_omegac/trial_6/significance_estimate_trial_decL_omegac.root
       namehistobkg: hbkg_counts_decL_omegac_4
-    KrKr:
+    PbPb:
       doeff: false
     ArAr:
       doeff: false
@@ -56,11 +56,11 @@ pt_binning:
   minb: 0.
   maxb: 10.
   hadron:
-    Lambda_c: [0,1,2,3,4,5,6,7,8,9,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
-    Xi_cc: [0,1,2,3,4,5,6,7,8,9,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10] 
-    Omega_cc: [0,1,2,3,4,5,6,7,8,9,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
-    Omega_ccc: [0,1,2,3,4,5,6,7,8,9,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
-    X3872: [0,1,2,3,4,5,6,7,8,9,10]
+    Lambda_c: [0,2,4,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
+    Xi_cc: [0,2,4,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10] 
+    Omega_cc: [0,2,4,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
+    Omega_ccc: [0,2,4,10] #[0,1,2,3,4,5,6,7,8,9,10] [0,2,4,10]
+    X3872: [0,2,4,10]
   eff_bin: [0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,
             10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0]
 latexparticle:
