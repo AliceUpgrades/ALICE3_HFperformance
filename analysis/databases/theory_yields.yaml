@@ -1,0 +1,94 @@
+SHMC_2021:
+  PbPb5p52:
+    absy0p5:
+      Lambda_c: 1.312e+00
+      Xi_cc: 5.672e-03
+      Omega_cc: 2.663e-03
+      Omega_ccc: 1.246e-04
+      X3872: 2.807e-03
+  KrKr6p46:
+    absy0p5:
+      Lambda_c: 3.655e-01
+      Xi_cc: 9.865e-04
+      Omega_cc: 4.632e-04
+      Omega_ccc: 1.231e-05
+      X3872: 5.966e-04
+  ArAr6p3:
+    absy0p5:
+      Lambda_c: 1.270e-01
+      Xi_cc: 2.024e-04
+      Omega_cc: 9.505e-05
+      Omega_ccc: 1.287e-06
+      X3872: 1.985e-04
+  
+Stat_ChoLee_1:
+  PbPb2p76:
+    absy0p5:
+      Xi_cc: 4.90e-03
+      Omega_ccc: 5.3e-06
+  
+Stat_ChoLee_2:
+  PbPb2p76:
+    absy0p5:
+      Xi_cc: 6.70e-03
+      Omega_ccc: 5.9e-06
+  
+Stat_ChoLee_tetra:
+  PbPb2p76:
+    absy0p5:
+      X3872: 3.80e-4
+
+Stat_ChoLee_molecule:
+  PbPb2p76:
+    absy0p5:
+      X3872: 4.50e-3
+
+Stat_Becc_min:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 1.9e-02
+      Omega_ccc: 1.0e-03
+  
+Stat_Becc_max:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 0.38
+      Omega_ccc: 0.03
+  
+Catania:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 1.8e-03
+      Omega_ccc: 3.5e-05
+
+statistics:
+  PbPb: 
+    sigmaAA_b: 7.8
+    lumiAA_monthi_invnb: 4.92 
+  KrKr: 
+    sigmaAA_b: 4.06
+    lumiAA_monthi_invnb: 123.
+  ArAr: 
+    sigmaAA_b: 2.6
+    lumiAA_monthi_invnb: 1080
+
+branchingratio:
+  Lambda_c:
+    central: 0.0628
+  Xi_cc: #https://arxiv.org/abs/1703.09086
+    central: 1.1e-3
+    min: 2.2e-4
+    max: 2.2e-3
+  Omega_cc:
+    central: 1.08e-3
+    min: 2.16e-4 
+    max: 2.16e-3
+  Omega_ccc:
+    central: 5.4e-05
+    min: 2.16e-6
+    max: 2.16e-4
+  X3872:
+    # https://pdg.lbl.gov/2020/tables/rpp2020-tab-mesons-c-cbar.pdf
+    # https://journals.aps.org/prd/pdf/10.1103/PhysRevD.100.094003
+    central: 0.0024440100 #0.041 * 0.05961
+
