@@ -2,7 +2,7 @@
 from math import sqrt
 from array import array
 import yaml
-# pylint: disable=import-error, no-name-in-module, unused-import
+# pylint: disable=import-error, no-name-in-module, unused-import, too-many-arguments
 from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
 from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
 
@@ -35,12 +35,9 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     bratio = paramgen["branchingratio"][hadron][brmode]
 
     yieldmid = paramyields[model][collision][yrange][hadron]
-    text = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
-            % (model, collision, nevt/1e9, bratio*100)
-    print("bratio=", bratio)
-    print("nevt=", (float)(nevt)/1.e12, "10^{12} events")
-    print("yieldmid=", yieldmid)
-
+    #text = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
+    #        % (model, collision, nevt/1e9, bratio*100)
+    #print (text)
     fileeff = TFile(nfileeff)
     histoeff = fileeff.Get(nhistoeff)
     filebkg = TFile(nfilebkg)
@@ -50,20 +47,20 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     histoyieldth = None
 
     if use_unnorm == 1:
-        histodNdptth = fileyieldth.Get(nhistoyieldth)
+        histodndptth = fileyieldth.Get(nhistoyieldth)
     else:
-        histodNdptth = fileyieldth.Get(nhistoyieldth_norm)
-        histodNdptth.Scale(yieldmid)
+        histodndptth = fileyieldth.Get(nhistoyieldth_norm)
+        histodndptth.Scale(yieldmid)
 
-    histoyieldth = histodNdptth.Clone("histoyieldth")
+    histoyieldth = histodndptth.Clone("histoyieldth")
 
     for ibin in range(histoyieldth.GetNbinsX()):
         binwdith = histoyieldth.GetBinWidth(ibin+1)
         yieldperevent = histoyieldth.GetBinContent(ibin+1)*binwdith
         histoyieldth.SetBinContent(ibin+1, yieldperevent)
         histoyieldth.SetBinError(ibin+1, 0.)
-    histoyieldth = histoyieldth.Rebin(len(binanal)-1,
-            "histoyieldth", binanal)
+    histoyieldth = histoyieldth.Rebin(len(binanal)-1, \
+             "histoyieldth", binanal)
     histosignfperevent = histoyieldth.Clone("histosignfperevent")
     histosignf = histoyieldth.Clone("histosignf")
 
@@ -94,15 +91,12 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     hempty.Draw()
 
     histosignf = histosignfperevent.Clone("histosignf")
-    print("nbins", histoyieldth.GetXaxis().GetNbins())
     for ibin in range(histoyieldth.GetNbinsX()):
         yieldperevent = histoyieldth.GetBinContent(ibin+1)*bratio
         bkgperevent = hbkgperevent.GetBinContent(ibin+1)
         eff = histoeff.GetBinContent(ibin+1)
         signalperevent = eff*yieldperevent
         significanceperevent = signalperevent/sqrt(signalperevent+bkgperevent)
-        print(histoyieldth.GetBinCenter(ibin+1))
-        print(significanceperevent)
         histosignfperevent.SetBinContent(ibin+1, significanceperevent)
         histosignf.SetBinContent(ibin+1, significanceperevent*sqrt(nevt))
         histosignf.SetBinError(ibin+1, 0.)
@@ -123,5 +117,5 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     histosignfperevent.Write()
     histoyieldth.Write()
     histosignf.Write()
-    histodNdptth.Write()
+    histodndptth.Write()
 analysis("Lambda_c")
