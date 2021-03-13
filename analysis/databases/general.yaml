@@ -6,13 +6,19 @@ latexparticle:
   X3872: "X(3872)"
 
 statistics:
-  PbPb: 
+  PbPb2p76: 
+    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV 
+    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
+  PbPb5p5: 
+    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
+    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
+  PbPb5p52: 
     sigmaAA_b: 7.8
     lumiAA_monthi_invnb: 4.92 
-  KrKr: 
+  KrKr6p46: 
     sigmaAA_b: 4.06
     lumiAA_monthi_invnb: 123.
-  ArAr: 
+  ArAr6p3: 
     sigmaAA_b: 2.6
     lumiAA_monthi_invnb: 1080
 

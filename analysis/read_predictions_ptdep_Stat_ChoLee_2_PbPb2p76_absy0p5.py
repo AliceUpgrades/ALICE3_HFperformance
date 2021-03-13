@@ -69,9 +69,12 @@ def read_predictions(hadron="Omega_ccc"):
     histo = TH1F("hdNdpt", ";p_{T}; #Delta N/#Delta p_{T}, |y|<0.5", nbins, minb, maxb)
     norm = 0.
     for i in range(nbins-1):
-        histo.SetBinContent(i+1, grpred.Eval(i*width+width/2.))
-        print(i+1, i*width+width/2., grpred.Eval(i*width+width/2.))
-        norm = norm + width*grpred.Eval(i*width+width/2.)
+        yvalue = grpred.Eval(i*width+width/2.)
+        if yvalue < 0:
+            yvalue = 0.
+        histo.SetBinContent(i+1, yvalue)
+        print(i+1, i*width+width/2., yvalue)
+        norm = norm + width*yvalue
     fout = TFile("../InputsTheory/" + filename + ".root", "recreate")
     fout.cd()
     grpred.Write()
