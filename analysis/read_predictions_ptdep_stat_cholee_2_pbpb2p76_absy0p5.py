@@ -11,7 +11,7 @@ read predictions from arXiv.1907.12786
 """
 
 def read_predictions(hadron="Omega_ccc"):
-    collision="PbPb"
+    collision = "PbPb"
     do2pipnorm = 1
     energy = 2.76
 
@@ -79,7 +79,8 @@ def read_predictions(hadron="Omega_ccc"):
     fout.cd()
     grpred.Write()
     histo.Write()
-    histo_norm = TH1F("hdNdpt_norm", ";p_{T}; #Delta N/#Delta p_{T}, |y|<0.5, norm = 1", nbins, minb, maxb)
+    histo_norm = TH1F("hdNdpt_norm", \
+        ";p_{T}; #Delta N/#Delta p_{T}, |y|<0.5, norm = 1", nbins, minb, maxb)
     for i in range(nbins-1):
         histo_norm.SetBinContent(i+1, histo.GetBinContent(i+1)/norm)
     histo_norm.Write()

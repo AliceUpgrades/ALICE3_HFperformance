@@ -1,5 +1,4 @@
 #pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
-from math import sqrt
 from array import array
 import yaml
 # pylint: disable=import-error, no-name-in-module, unused-import
@@ -20,8 +19,6 @@ def analysis(hadron="Omega_ccc"):
     ymax = paramyields["comparison_models_AA"][hadron]["ymax"]
     binanal = array('d', paramyields["comparison_models_AA"]["pt_binning"][hadron])
 
-    print(models)
-
     with open(r'databases/general.yaml') as fileparamgen:
         paramgen = yaml.load(fileparamgen, Loader=yaml.FullLoader)
 
@@ -35,7 +32,6 @@ def analysis(hadron="Omega_ccc"):
     for icase, _ in enumerate(models):
         histolist[icase] = histo_norm.Clone("dNdpt%s%s%s" % \
                 (models[icase], collisions[icase], brmodes[icase]))
-        print(icase)
     canvas = TCanvas("canvas", "A Simple Graph Example", 881, 176, 668, 616)
     gStyle.SetOptStat(0)
     canvas.SetHighLightColor(2)
@@ -84,16 +80,11 @@ def analysis(hadron="Omega_ccc"):
         text = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
                 % (model, collision, nevt/1e9, bratio*100)
         scalef = bratio * nevt * yieldmid
-        print("scalef=", scalef)
-        print("bratio=", bratio)
-        print("nevt=", nevt)
-        print("yieldmid=", yieldmid)
 
         for ibin in range(histolist[icase].GetNbinsX()-1):
             binwdith = histolist[icase].GetBinWidth(ibin+1)
             yvalue = histolist[icase].GetBinContent(ibin+1)
             histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
-            print("yvalue %d %d %f" % (icase,ibin,yvalue))
         histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
             "histo_pred%s%s%s" % (model, collision, brmode), \
             binanal)
@@ -101,7 +92,7 @@ def analysis(hadron="Omega_ccc"):
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
         histolist[icase].Draw("same")
-        text = text + " Yield(tot)=%.2f" % (histolist[icase].Integral(0,8))
+        text = text + " Yield(tot)=%.2f" % (histolist[icase].Integral(0, 8))
         leg.AddEntry(histolist[icase], text, "pF")
     leg.Draw()
     canvas.SaveAs(hadron+"_results.pdf")
