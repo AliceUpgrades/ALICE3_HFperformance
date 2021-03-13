@@ -21,6 +21,9 @@ statistics:
   ArAr6p3: 
     sigmaAA_b: 2.6
     lumiAA_monthi_invnb: 1080
+  pp14p0:
+    sigmaAA_b: 0.070
+    lumiAA_monthi_invnb: 3000000
 
 branchingratio:
   Lambda_c:
