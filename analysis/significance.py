@@ -97,7 +97,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     print("nbins", histoyieldth.GetXaxis().GetNbins())
     for ibin in range(histoyieldth.GetNbinsX()):
         yieldperevent = histoyieldth.GetBinContent(ibin+1)*bratio
-        bkgperevent = hbkgperevent.GetBinWidth(ibin+1)
+        bkgperevent = hbkgperevent.GetBinContent(ibin+1)
         eff = histoeff.GetBinContent(ibin+1)
         signalperevent = eff*yieldperevent
         significanceperevent = signalperevent/sqrt(signalperevent+bkgperevent)
