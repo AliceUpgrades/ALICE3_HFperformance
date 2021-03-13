@@ -42,7 +42,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     yieldmid = paramyields[model][collision][yrange][hadron]
     text = '%s, N_{ev} = %.0f 10^{12}' % (textmodel, nevt/1e12)
     text_a = '#Lambda_{c} #rightarrow pK#pi, %s, BR=%.2f%%' % (textrapid, bratio*100)
-    text_b = 'ALICE3 projection, %s' % textcollision
+    text_b = 'ALICE3 projection, with IRIS, no PID, %s' % textcollision
     fileeff = TFile(nfileeff)
     histoeff = fileeff.Get(nhistoeff)
     filebkg = TFile(nfilebkg)
@@ -85,8 +85,8 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T}; Significance(3#sigma)", 100, 0., 12., 100, ymin, ymax)
-    hempty.GetXaxis().SetTitle("p_{T}")
+    hempty = TH2F("hempty", ";p_{T} (GeV/c); Significance(3#sigma)", 100, 0., 12., 100, ymin, ymax)
+    hempty.GetXaxis().SetTitle("p_{T} (GeV/c)")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
     hempty.GetXaxis().SetTitleFont(42)
@@ -122,7 +122,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     t_b.SetNDC()
     t_b.SetTextFont(42)
     t_b.SetTextColor(1)
-    t_b.SetTextSize(0.04)
+    t_b.SetTextSize(0.035)
     t_b.SetTextAlign(12)
     t_b.DrawLatex(0.2, 0.85, text_b)
     t_c = TLatex()
