@@ -81,7 +81,7 @@ def analysis(hadron="Omega_ccc"):
                 % (model, collision, nevt/1e9, bratio*100)
         scalef = bratio * nevt * yieldmid
 
-        for ibin in range(histolist[icase].GetNbinsX()-1):
+        for ibin in range(histolist[icase].GetNbinsX()):
             binwdith = histolist[icase].GetBinWidth(ibin+1)
             yvalue = histolist[icase].GetBinContent(ibin+1)
             histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
