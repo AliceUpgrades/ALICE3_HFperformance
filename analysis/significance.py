@@ -32,7 +32,6 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     sigma_aa_b = paramgen["statistics"][collision]["sigmaAA_b"]
     lumiaa_monthi_invnb = paramgen["statistics"][collision]["lumiAA_monthi_invnb"]
     nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9
-    nevt =2*1e9
     bratio = paramgen["branchingratio"][hadron][brmode]
 
     yieldmid = paramyields[model][collision][yrange][hadron]
@@ -81,7 +80,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T}; Significance(3#sigma)", 100, 0., 15., 100, ymin, ymax)
+    hempty = TH2F("hempty", ";p_{T}; Significance(3#sigma)", 100, 0., 12., 100, ymin, ymax)
     hempty.GetXaxis().SetTitle("p_{T}")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
