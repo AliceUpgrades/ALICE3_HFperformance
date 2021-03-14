@@ -4,7 +4,9 @@
 
 * [Introduction](#introduction)
 * [Overview](#overview)
-  * [Execution](#execution)
+  * [InputTheory](#InputTheory)
+  * [InputExp](#InputExp)
+  * [How to run it](#How to run it)
 
 ## Introduction
 
