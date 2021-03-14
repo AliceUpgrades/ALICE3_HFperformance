@@ -30,10 +30,12 @@ In this folder, we collect all the analysis macros for performing the final anal
   * The [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/read_predictions_ptdep_stat_cholee_2_pbpb2p76_absy0p5.py) already introduced above to convert the cvs predictions from arXiv.1907.12786 to ROOT histograms (the ROOT files are not pushed into the repository, but they need to be generated when needed). 
   * A [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/expected_yields.py) to perform the comparison of the expected yields of charmed and multi-charmed hadrons in AA collisions. Few remarks:
     * For the moment, we consider for each theoretical calculation the same p<sub>T</sub>-shape. We indeed consider the normalized p<sub>T</sub>-spectrum from arXiv.1907.12786 and we just multiply it for the expected dN/dp<sub>T</sub> provided by each theory group (collected [here](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/theory_yields.yaml).
-  * A [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/significance.py) that performs the significance estimation as a function of p<sub>T</sub>. The parameters needed are read from the following two databases, [significance.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/significance.yaml) and [general.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/general.yaml).
+    * Make sure you run the script descrive in the bullet above in advance in order to generate the ROOT histograms needed for the comparison.  
+  * A [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/significance.py) that performs the significance estimation as a function of p<sub>T</sub> (currently working only for Λ<sub>c</sub> baryons in pp collisions). The parameters needed are read from the following two databases, [significance.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/significance.yaml) and [general.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/general.yaml).
 
-Execution code can be found in the `exec` directory.
+## How to run it
 
-```bash
-bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>] [-d]
+All the scripts can be run as simple python scripts from the folder "analysis" . E.g
+```python
+python  read_predictions_ptdep_stat_cholee_2_pbpb2p76_absy0p5.py
 ```
