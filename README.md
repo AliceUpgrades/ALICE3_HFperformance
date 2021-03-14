@@ -35,7 +35,14 @@ In this folder, we collect all the analysis macros for performing the final anal
 
 ## How to run it
 
-All the scripts can be run as simple python scripts from the folder "analysis" . E.g
+All the scripts can be run as simple python scripts from the folder "analysis" . E.g.:
 ```python
-python  read_predictions_ptdep_stat_cholee_2_pbpb2p76_absy0p5.py
+python read_predictions_ptdep_stat_cholee_2_pbpb2p76_absy0p5.py
 ```
+```python
+python expected_yields.py
+```
+```python
+python significance.py
+```
+
