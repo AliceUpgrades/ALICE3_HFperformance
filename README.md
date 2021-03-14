@@ -6,7 +6,7 @@
 * [Overview](#overview)
   * [InputTheory](#InputTheory)
   * [InputExp](#InputExp)
-  * [How to run it](#How to run it)
+  * [HowTo](#HowTo)
 
 ## Introduction
 
@@ -35,7 +35,7 @@ In this folder, we collect all the analysis macros for performing the final anal
     * Make sure you run the script descrive in the bullet above in advance in order to generate the ROOT histograms needed for the comparison.  
   * A [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/significance.py) that performs the significance estimation as a function of p<sub>T</sub> (currently working only for Λ<sub>c</sub> baryons in pp collisions). The parameters needed are read from the following two databases, [significance.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/significance.yaml) and [general.yaml](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/databases/general.yaml).
 
-## How to run it
+## HowTo
 
 All the scripts can be run as simple python scripts from the folder "analysis" . E.g.:
 ```python
