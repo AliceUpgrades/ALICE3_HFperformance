@@ -12,9 +12,8 @@ The purpose of this repository is to collect the macros and utilities to study t
 
 ## Overview
 
-The validation framework is a general configurable platform that gives user the full control over what is done.
-Its flexibility is enabled by strict separation of its specialised components into a system of bash scripts.
-Configuration is separate from execution code, input configuration is separate from task configuration, execution steps are separate from the main steering code.
+The repository now contains the following subfolders
+### InputTheory
 
 * The steering script `runtest.sh` provides control parameters and interface to the machinery for task execution.
 * User provides configuration bash scripts which:
