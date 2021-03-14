@@ -9,7 +9,7 @@ from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
 Perform comparison between expected yields of the different baryons based
 on dN/dy from different theoretical calculations and different assumptions
 for the integrated luminosity of the various ion species.
-#FIXME: for the moment we use the pT-shape normalized to unity from
+for the moment we use the pT-shape normalized to unity from
 arXiv.1907.12786 and we just multiply for dN/dy of each model.
 """
 
