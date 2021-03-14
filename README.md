@@ -13,7 +13,8 @@ The purpose of this repository is to collect the macros and utilities to study t
 ## Overview
 
 The repository now contains the following subfolders:
-* **InputTheory** contains p<sub>T</sub>]-dependent predictions for charmed and multi-charm baryons. In particular:
+### InputTheory
+  * it contains p<sub>T</sub>]-dependent predictions for charmed and multi-charm baryons. In particular:
   * predictions in csv from the coalescence calculations based on arXiv.1907.12786 in PbPb collisions at 2.76 TeV. These inputs can be converted in ROOT histograms by using the following [script](https://github.com/AliceUpgrades/ALICE3_HFperformance/blob/main/analysis/read_predictions_ptdep_stat_cholee_2_pbpb2p76_absy0p5.py), as discussed later.
   * predictions for the Lambda_c baryons in pp collisions from Pythia
 
