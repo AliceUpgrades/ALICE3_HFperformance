@@ -80,6 +80,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
              "histoyieldth", binanal)
     histosignfperevent = histoyieldth.Clone("histosignfperevent")
     histosignf = histoyieldth.Clone("histosignf")
+    histosigoverbkg = histoyieldth.Clone("histosigoverbkg")
 
     canvas = TCanvas("canvas", "A Simple Graph Example", 881, 176, 668, 616)
     gStyle.SetOptStat(0)
@@ -94,7 +95,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T} (GeV/c); Significance(3#sigma)", 100, 0., 12., 100, ymin, ymax)
+    hempty = TH2F("hempty", ";p_{T} (GeV/c); Significance(3#sigma)", 100, 0., 10., 100, ymin, ymax)
     hempty.GetXaxis().SetTitle("p_{T} (GeV/c)")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
@@ -114,10 +115,15 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
         eff = histoeff.GetBinContent(ibin+1)
         signalperevent = eff*yieldperevent
         significanceperevent = signalperevent/sqrt(signalperevent+bkgperevent)
+        signaloverbkg = signalperevent/bkgperevent
         histosignfperevent.SetBinContent(ibin+1, significanceperevent)
+        histosignfperevent.SetBinError(ibin+1, 0.)
         histosignf.SetBinContent(ibin+1, significanceperevent*sqrt(nevt))
         histosignf.SetBinError(ibin+1, 0.)
-        histosignfperevent.SetBinError(ibin+1, 0.)
+        histosigoverbkg.SetBinContent(ibin+1, signaloverbkg)
+        histosigoverbkg.SetBinError(ibin+1, 0.)
+
+
 
 
     histosignfperevent.SetLineColor(1)
@@ -159,4 +165,5 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     histoyieldth.Write()
     histosignf.Write()
     histodndptth.Write()
+    histosigoverbkg.Write()
 analysis("Lambda_c")
