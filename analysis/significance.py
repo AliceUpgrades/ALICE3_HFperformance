@@ -124,8 +124,6 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
         histosigoverbkg.SetBinError(ibin+1, 0.)
 
 
-
-
     histosignfperevent.SetLineColor(1)
     histosignfperevent.SetMarkerColor(1)
     histosignfperevent.SetLineWidth(1)
