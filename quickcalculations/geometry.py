@@ -1,5 +1,5 @@
+#pylint: disable=missing-docstring
 import math
-
 
 def geometrybarrel():
     radius_list = [0.0050, 0.0120, 0.0250, 0.0375, 0.0700, 0.1200, 0.2000, 0.3000,
