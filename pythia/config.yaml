@@ -46,7 +46,7 @@ Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   beamidA: 2212 #incoming hadron
   beamidB: 2212 #incoming hadron
   eCM: 14000
-  pythiamode: HardQCD:hardccbar = on
+  pythiamode: SoftQCD:all = on
   extramode: mode2 #in case extra tuning is needed
   nptbins: 100
   ptmin: 0.
@@ -65,7 +65,7 @@ Xicc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   beamidA: 2212 #incoming hadron
   beamidB: 2212 #incoming hadron
   eCM: 14000
-  pythiamode: HardQCD:hardccbar = on
+  pythiamode: SoftQCD:all = on
   extramode: mode2 #in case extra tuning is needed
   nptbins: 100
   ptmin: 0.
@@ -84,7 +84,7 @@ Omegaccc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   beamidA: 2212 #incoming hadron
   beamidB: 2212 #incoming hadron
   eCM: 14000
-  pythiamode: HardQCD:hardccbar = on
+  pythiamode: SoftQCD:all = on
   extramode: mode2 #in case extra tuning is needed
   nptbins: 100
   ptmin: 0.
