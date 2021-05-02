@@ -1,9 +1,6 @@
 ###### PLEASE CONFIGURE THESE PARAMETERS #####
 SETUPFILE=/home/pyadmin/software/setup_scripts/setup-pythia8.sh #contains env. variables
 COMPILER=compile_pythia.sh
-export USERLOCAL=/usr/local
-export USERLOCAL_LIB=$USERLOCAL/lib
-export USERLOCAL_INCLUDE=$USERLOCAL/include
 export CASEFILE=case.sh
 source $CASEFILE
 NJOBS=50 #WARNING: BE AWARE THAT THE FILES PRODUCED BY EACH JOB WILL HAVE 
