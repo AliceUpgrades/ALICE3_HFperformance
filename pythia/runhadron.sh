@@ -1,22 +1,37 @@
-rm *.root *.exe
-cp ../compile_pythia_aliceml.sh .
-source /home/pyadmin/setup-pythia8.sh
-./compile_pythia_aliceml.sh examplehadron
-
-rm -rf outputtest
-mkdir outputtest
-
+###### PLEASE CONFIGURE THESE PARAMETERS #####
+SETUPFILE=/home/pyadmin/software/setup_scripts/setup-pythia8.sh #contains env. variables
+COMPILER=compile_pythia.sh
+export USERLOCAL=/usr/local
+export USERLOCAL_LIB=$USERLOCAL/lib
+export USERLOCAL_INCLUDE=$USERLOCAL/include
+export CASEFILE=case.sh
+source $CASEFILE
 NJOBS=50 #WARNING: BE AWARE THAT THE FILES PRODUCED BY EACH JOB WILL HAVE 
 	 #1/NJOBS AS NORMALIZATION, TO PRODUCE MERGED FILES PROPERLY NORMALIZED.
-cd outputtest
+echo "----------------------------------"
+echo "----------------------------------"
+echo "----------------------------------"
+echo $CASE
+echo "----------------------------------"
+echo "----------------------------------"
+echo "----------------------------------"
 
-for i in {1..50} #FIXME has to be manually set to NJOBS for the moment
+###### 
+rm *.root *.exe
+source $SETUPFILE
+./$COMPILER examplehadron
+
+rm -rf $OUTPUTFOLDER
+mkdir $OUTPUTFOLDER
+cd $OUTPUTFOLDER
+for i in $( eval echo {1..$NJOBS} )
 do
    mkdir file_$i
    cd file_$i
    cp ../../examplehadron.exe .
-   ./examplehadron.exe  $RANDOM $NJOBS &
+   cp ../../config.yaml .
+   echo $RANDOM
+   ./examplehadron.exe $CASE $RANDOM $NJOBS &
    cd ..
 done
 
-hadd outputtest/mergedresult.root outputtest/file_*/*.root

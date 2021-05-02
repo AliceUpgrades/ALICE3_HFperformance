@@ -6,4 +6,5 @@ g++ ${1}.cc \
      -I$PY8_ROOT_INCLUDE -L$Py8_ROOT_LIB -EG -lz \
      -I$PY8_FASTJET_INCLUDE -L$PY8_FASTJET_LIB -lfastjet -lRecursiveTools -lfastjettools  -lNsubjettiness  \
      -L$PY8_CGAL_LIB \
+     -L$USERLOCAL_LIB -I$USERLOCAL_INCLUDE -lyaml-cpp \
      $PY8_FLAGS
