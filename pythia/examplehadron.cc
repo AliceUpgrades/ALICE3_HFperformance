@@ -90,6 +90,7 @@ int main(int argc, char* argv[]) {
     pythia.readString(Form("Random:seed = %d",cislo));
 
     if (extramode=="mode2") {
+        std::cout<<"Running with mode2"<<std::endl;
         pythia.readString("ColourReconnection:mode = 1");
         pythia.readString("ColourReconnection:allowDoubleJunRem = off");
         pythia.readString("ColourReconnection:m0 = 0.3");
