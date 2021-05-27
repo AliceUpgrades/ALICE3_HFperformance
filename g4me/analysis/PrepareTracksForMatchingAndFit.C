@@ -192,7 +192,10 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
 	  new (trackCandidatesHitCovMID[nPreparedTrackletsMID]) TClonesArray(trackletMIDcov);
 
 	  idTrackMID.emplace_back(trackletID);
-    pdgCodeMID.emplace_back(io.tracks.pdg[trackletID]);
+    if (trackletID !=-1){
+      pdgCodeMID.emplace_back(io.tracks.pdg[trackletID]);
+    }
+
 
 	  nPreparedTrackletsMID++;
 
