@@ -40,16 +40,16 @@ Bool_t IsTrackInteresting(Int_t iTrack);
 //====================================================================================================================================================
 
 void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outputFileName, const double hitMinP = 0.050) {
-  
+
   TDatime t;
   gRandom->SetSeed(t.GetDate()+t.GetYear()*t.GetHour()*t.GetMinute()*t.GetSecond());
-  
+
   MIDTrackletSelector *trackletSel = new MIDTrackletSelector();
   if (!(trackletSel -> Setup("muonTrackletAcceptance.root"))) {
     printf("MID tracklet selector could not be initialized. Quitting.\n");
     return;
   }
-  
+
   style();
 
   const double resolutionITS =   5.e-4;  //   5 um
@@ -63,14 +63,17 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
   TFile *fileOut = new TFile(outputFileName,"recreate");
   treeOut = new TTree("TracksToBeFitted","Tracks to be fitted");
 
-  TClonesArray trackCandidatesHitPosITS("TClonesArray");     // array of hit position arrays (for the ITS tracks)  
+  TClonesArray trackCandidatesHitPosITS("TClonesArray");     // array of hit position arrays (for the ITS tracks)
   TClonesArray trackCandidatesHitCovITS("TClonesArray");     // array of hit covariance arrays (for the ITS tracks)
-  TClonesArray trackCandidatesHitPosMID("TClonesArray");     // array of hit position arrays (for the MID tracklets)  
+  TClonesArray trackCandidatesHitPosMID("TClonesArray");     // array of hit position arrays (for the MID tracklets)
   TClonesArray trackCandidatesHitCovMID("TClonesArray");     // array of hit covariance arrays (for the MID tracklets)
   TClonesArray particlesITS("TParticle");                    // array of particles corresponding to the ITS tracks
+
   std::vector<int> idTrackITS;
   std::vector<int> idTrackMID;
-  
+  std::vector<int> pdgCodeMID;                               // array of pdgCode corresponding to the MID tracklets
+
+
   treeOut->Branch("TrackCandidatesHitPosITS",&trackCandidatesHitPosITS,256000,-1);
   treeOut->Branch("TrackCandidatesHitCovITS",&trackCandidatesHitCovITS,256000,-1);
   treeOut->Branch("TrackCandidatesHitPosMID",&trackCandidatesHitPosMID,256000,-1);
@@ -78,6 +81,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
   treeOut->Branch("ParticlesITS",            &particlesITS,            256000,-1);
   treeOut->Branch("idTrackITS",              &idTrackITS);
   treeOut->Branch("idTrackMID",              &idTrackMID);
+  treeOut->Branch("pdgCodeMID",              &pdgCodeMID);
 
   TVector3 pos, mom;
   TMatrixDSym covITS(3);
@@ -86,7 +90,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
   for (int i=0; i<3; i++) covMID(i,i) = resolutionMID*resolutionMID;
 
   // loop over events
-  
+
   for (int iEv=0; iEv<nEvents; iEv++) {
 
     io.event(iEv);
@@ -98,6 +102,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
     particlesITS.Clear();
     idTrackITS.clear();
     idTrackMID.clear();
+    pdgCodeMID.clear();
 
     std::vector<TClonesArray> allTracksHitPosITS(io.tracks.n,TClonesArray("TVector3"));
     std::vector<TClonesArray> allTracksHitCovITS(io.tracks.n,TClonesArray("TMatrixDSym"));
@@ -106,7 +111,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
     std::vector<int> arrayHitID_MIDLayer2(io.hits.n,-1);
     nHits_MIDLayer1 = 0;
     nHits_MIDLayer2 = 0;
-    
+
     for (int iHit=0; iHit<io.hits.n; iHit++) {
 
       // filling arrays of hit IDs from MID layers (coming from any charged tracks)
@@ -114,7 +119,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
       auto trackID = io.hits.trkid[iHit];
 
       if (!(IsTrackCharged(trackID))) continue;
-      
+
       mom.SetXYZ(io.hits.px[iHit],io.hits.py[iHit],io.hits.pz[iHit]);
       if (mom.Mag() < hitMinP) continue;
 
@@ -123,7 +128,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
 
       // filling arrays of hits from ITS tracks (only for interesting tracks: charged and primary).
       // Hits from ITS are by definition all the hits having radius < rMaxITS
-      
+
       if (!(IsTrackInteresting(trackID))) continue;
 
       pos.SetXYZ(gRandom->Gaus(io.hits.x[iHit],resolutionITS),gRandom->Gaus(io.hits.y[iHit],resolutionITS),gRandom->Gaus(io.hits.z[iHit],resolutionITS));
@@ -135,7 +140,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
     }
 
     // filling the final arrays with the hit information from good ITS tracks
-    
+
     nPreparedTracksITS = 0;
 
     for (int iTrack=0; iTrack<io.tracks.n; iTrack++) {
@@ -159,7 +164,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
     int idHitLayer1, idHitLayer2, trackIdHitLayer1, trackIdHitLayer2, trackletID;
 
     for (int iHitLayer1=0; iHitLayer1<nHits_MIDLayer1; iHitLayer1++) {
-      
+
       idHitLayer1 = arrayHitID_MIDLayer1[iHitLayer1];
       posHitMID1.SetXYZ(gRandom->Gaus(io.hits.x[idHitLayer1],resolutionMID),gRandom->Gaus(io.hits.y[idHitLayer1],resolutionMID),gRandom->Gaus(io.hits.z[idHitLayer1],resolutionMID));
       trackIdHitLayer1 = io.hits.trkid[idHitLayer1];
@@ -174,22 +179,23 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
 
 	  if (trackIdHitLayer1==trackIdHitLayer2) trackletID = trackIdHitLayer1;
 	  else                                    trackletID = -1;
-	  
+
 	  TClonesArray trackletMIDpos("TVector3");
 	  TClonesArray trackletMIDcov("TMatrixDSym");
-	  
+
 	  new (trackletMIDpos[trackletMIDpos.GetEntries()]) TVector3(posHitMID1);
 	  new (trackletMIDpos[trackletMIDpos.GetEntries()]) TVector3(posHitMID2);
 	  new (trackletMIDcov[trackletMIDcov.GetEntries()]) TMatrixDSym(covMID);
 	  new (trackletMIDcov[trackletMIDcov.GetEntries()]) TMatrixDSym(covMID);
-	  
+
 	  new (trackCandidatesHitPosMID[nPreparedTrackletsMID]) TClonesArray(trackletMIDpos);
 	  new (trackCandidatesHitCovMID[nPreparedTrackletsMID]) TClonesArray(trackletMIDcov);
 
 	  idTrackMID.emplace_back(trackletID);
-	  
+    pdgCodeMID.emplace_back(io.tracks.pdg[trackletID]);
+
 	  nPreparedTrackletsMID++;
-	  
+
 	}
 
       }
@@ -197,7 +203,7 @@ void PrepareTracksForMatchingAndFit(const char *inputFileName, const char *outpu
     }
 
     printf("Ev %4d : %4d ITS tracks and %4d MID tracklets prepared for fitting\n",iEv,nPreparedTracksITS,nPreparedTrackletsMID);
-    
+
     treeOut->Fill();
 
   }
