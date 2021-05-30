@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
     TH1F*hptyields_unnorm = new TH1F(Form("h%syieldsvspt_unnorm", myhadronname.data()), ";p_{T} (GeV);unnormalized yield (particle+anti)", nptbins, ptmin, ptmax);
     TH1F*hptcross = new TH1F(Form("h%scrossvspt", myhadronname.data()), Form(";p_{T} (GeV);%s d#sigma^{PYTHIA}/dp_{T} (#mu b/GeV)", myhadronlatex.data()), nptbins, ptmin, ptmax);
     TH1F*hycharmcross = new TH1F("hycharmcross", ";y;%s d#sigma_{c}^{PYTHIA}/dy (#mu b)", 61, -30.5, 30.5);
-    TH1F*hycross = new TH1F("hycross", ";y;%s d#sigma_{c}^{PYTHIA}/dy (#mu b)", 61, -30.5, 30.5);
+    TH1F*hycross = new TH1F("hycross", ";y;%s d#sigma_{HF}^{PYTHIA}/dy (#mu b)", 61, -30.5, 30.5);
     TH2F*hptycharmcross = new TH2F("hptcharmcross", ";p_{T} (GeV); y", 100, 0., 100.,60, -30., 30.);
 
     // Begin event loop. Generate event. Skip if error. List first one.
