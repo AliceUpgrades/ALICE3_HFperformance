@@ -122,7 +122,9 @@ void SOverBCompvsPID() {
   lat->DrawLatex(0.2,0.83,"ALICE3 projection, pp #sqrt{s}= 14 TeV");
   lat2->DrawLatex(0.2,0.76,"Pythia 8, mode = 2, N_{ev}=210 10^{12}");
   lat3->DrawLatex(0.2,0.69,"J/#psi #rightarrow e^{+}e^{-}, |y| < 1.44, BR=5.94%");
-  
+  lat3->SetTextSize(0.035);
+  lat3->DrawLatex(0.2,0.2,"|n#sigma_{TOF}| < 3, 0.15 < #it{p}_{T} < 1 Gev/#it{c}");
+  lat3->DrawLatex(0.2,0.15,"|n#sigma_{RICH}| < 3, 0.5 < #it{p}_{T} < 15 Gev/#it{c}"); 
 
   /////////////////////////////////////////////////////////////////////// RATIO /////////////////////////////////////////////////////////////////////
 
