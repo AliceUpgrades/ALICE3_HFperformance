@@ -95,7 +95,7 @@ void mystyle() {
 
   gROOT->ForceStyle();
   gStyle->SetOptStat(0);
-  gStyle->SetFrameLineWidth(2);
+  gStyle->SetFrameLineWidth(1);
   gStyle->SetTitleSize(0.045, "x");
   gStyle->SetTitleSize(0.045, "y");
   gStyle->SetMarkerSize(1);
