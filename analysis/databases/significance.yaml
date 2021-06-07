@@ -18,14 +18,14 @@ Jpsitoee:
       ymax: 100000
       binning: [0.,0.5,1.,2.,3.,4.,5.,7.,10.,15]
       #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_noPID/efficiencies.root 
-      #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOF3sigma/efficiencies.root
+      efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOF3sigma/efficiencies.root
       #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOFcombineRICH3sigma/efficiencies.root
-      efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/efficiencies.root #this is temporarily the Lc files
+      #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/efficiencies.root #this is temporarily the Lc files
       histoeff: eff
       #bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_noRICH/BkgperEvents.root 
-      #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOF3sigma/BkgperEvents.root
-      #efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOFcombineRICH3sigma/BkgperEvents.root
-      bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/BkgperEvents.root 
+      bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOF3sigma/BkgperEvents.root
+      #bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_TOFcombineRICH3sigma/BkgperEvents.root
+      #bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/BkgperEvents.root 
       histobkg: hBkgPerEvent
       theoryfile: ../InputsTheory/Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44.root #this is temporarely the Lc file
       histoyield: hJpsicrossvspt #to be replaced with the name of the jpsi th histogram
